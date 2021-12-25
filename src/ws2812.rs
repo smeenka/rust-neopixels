@@ -40,7 +40,8 @@ macro_rules!  ws2812_generate
 {
     ($nr_pixels:literal) => {
         use neopixels::{Neopixels};
-
+        use smart_leds_trait::{RGB};
+        
         #[derive(Clone, Copy)]
         enum CurrentPixel{
             R,G,B,W
@@ -58,9 +59,9 @@ macro_rules!  ws2812_generate
         impl Ws2812 {
             pub fn new() -> Ws2812 {
                 Ws2812 {
-                    intensity_r:100,
-                    intensity_g:100,
-                    intensity_b:100,
+                    intensity_r:0x50,
+                    intensity_g:0x60,
+                    intensity_b:0x80,
                     pixels: [RGB::default(); $nr_pixels],
                     idx:0,
                     currentPixel:CurrentPixel::G,

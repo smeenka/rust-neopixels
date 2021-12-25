@@ -15,7 +15,7 @@
 pub mod ws2812;
 
  
- pub trait Neopixels<T> {
+ pub trait Neopixels<T:?Sized> {
 
      fn set_r(&mut self, idx:usize, r:u8);
      fn set_g(&mut self, idx:usize, g:u8);
