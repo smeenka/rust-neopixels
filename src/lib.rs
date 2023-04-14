@@ -14,28 +14,32 @@
 
 pub mod ws2812;
 
- 
- pub trait Neopixels<T:?Sized> {
+pub struct RGB {
+    pub r: u8,
+    pub g: u8,
+    pub b: u8,
+}
+impl Default for RGB {
+    fn default() -> RGB {
+        RGB { r: 0, g: 0, b: 0 }
+    }
+}
 
-     fn set_r(&mut self, idx:usize, r:u8);
-     fn set_g(&mut self, idx:usize, g:u8);
-     fn set_b(&mut self, idx:usize, b:u8);
-     fn set_w(&mut self, idx:usize, w:u8);
-     fn set(&mut self, idx:usize, rgb:T);
+pub trait Neopixels {
+    fn set_r(&mut self, idx: usize, r: u8);
+    fn set_g(&mut self, idx: usize, g: u8);
+    fn set_b(&mut self, idx: usize, b: u8);
+    fn set_w(&mut self, idx: usize, w: u8);
+    fn set(&mut self, idx: usize, rgb: RGB);
 
-     fn get(&self, idx:usize)-> T;
+    fn shift_left(&mut self);
+    fn shift_right(&mut self);
+    fn rotate_left(&mut self);
+    fn rotate_right(&mut self);
 
-     fn shift_left(&mut self);
-     fn shift_right(&mut self);
-     fn rotate_left(&mut self);
-     fn rotate_right(&mut self);
-
-     fn intensity_r(&mut self, g:u8);
-     fn intensity_g(&mut self, g:u8);
-     fn intensity_b(&mut self, b:u8);
-     fn intensity_w(&mut self, w:u8);
-     fn intensity(&mut self, color:T);  
-    
-
- }
-
+    fn intensity_r(&mut self, r: u8);
+    fn intensity_g(&mut self, g: u8);
+    fn intensity_b(&mut self, b: u8);
+    fn intensity_w(&mut self, w: u8);
+    fn intensity(&mut self, color: RGB);
+}

@@ -14,14 +14,14 @@ halt_afterwards = false
 [default.general]
 # The chip name of the chip to be debugged.
 #chip = "STM32G030J6Mx"
-chip = "STM32G070CB"
+chip = "STM32G070CBTx"
 # A list of chip descriptions to be loaded during runtime.
 chip_descriptions = []
 # The default log level to be used.
 log_level = "Warn"
 
 [default.rtt]
-enabled = false
+enabled = true
 # A list of channel associations to be displayed. If left empty, all channels are displayed.
 channels = [
     # { up = 0, down = 0, name = "name" }
