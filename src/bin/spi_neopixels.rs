@@ -4,8 +4,9 @@
 
 use defmt::*;
 use embassy_executor::Spawner;
+use embassy_stm32::dma::word::U5;
 use embassy_stm32::dma::NoDma;
-use embassy_stm32::spi::{Config, Spi, U5};
+use embassy_stm32::spi::{Config, Spi};
 use embassy_stm32::time::Hertz;
 use embassy_time::{Duration, Timer};
 use {defmt_rtt as _, panic_probe as _};
@@ -75,7 +76,7 @@ async fn main(_spawner: Spawner) {
     let p = embassy_stm32::init(Default::default());
     info!("Start test using spi as neopixel driver");
 
-    let mut spi = Spi::new_neopixel_driver(
+    let mut spi = Spi::new_txonly_nosck(
         p.SPI1,
         p.PB5,
         p.DMA1_CH3,

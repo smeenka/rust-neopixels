@@ -14,6 +14,12 @@
 
 pub mod ws2812;
 
+pub enum NeoColor {
+    R,
+    G,
+    B,
+    W,
+}
 pub struct RGB {
     pub r: u8,
     pub g: u8,

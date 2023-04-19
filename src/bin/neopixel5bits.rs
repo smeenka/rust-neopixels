@@ -1,26 +1,26 @@
 #![no_std]
 #![no_main]
 #![feature(type_alias_impl_trait)]
-#![feature(trace_macros)]
-
-trace_macros!(true);
 
 use defmt::*;
 use embassy_executor::Spawner;
+use embassy_stm32::dma::word::U5;
 use embassy_stm32::dma::NoDma;
 use embassy_stm32::spi::{Config, Spi};
 use embassy_stm32::time::Hertz;
 use embassy_time::{Duration, Timer};
-use neopixels::{ws2812_generate, RGB};
-
+use neopixels::ws2812::Ws2812;
+use neopixels::RGB;
 use {defmt_rtt as _, panic_probe as _};
+
+type NeoBufferType = [U5; 4 * 24];
 
 #[embassy_executor::main]
 async fn main(_spawner: Spawner) {
     let p = embassy_stm32::init(Default::default());
     info!("Start test using spi as neopixel driver");
 
-    let mut spi = Spi::new_neopixel_driver(
+    let mut spi = Spi::new_txonly_nosck(
         p.SPI1,
         p.PB5,
         p.DMA1_CH3,
@@ -28,9 +28,8 @@ async fn main(_spawner: Spawner) {
         Hertz(4_000_000),
         Config::default(),
     );
-    ws2812_generate!(15);
-
-    let mut neopixels = Ws2812::new();
+    let mut buffer = [U5(0); 4 * 24];
+    let mut neopixels = Ws2812::new(&mut buffer, 24);
 
     for int in 0..10 {
         info!("Loop with intensity {}", int * 20);
@@ -58,7 +57,7 @@ async fn main(_spawner: Spawner) {
             }
             cnt += 1;
             // start sending the neopixel bit patters over spi to the neopixel string
-            spi.write(&neopixels.bitbuffer).await.ok();
+            spi.write(neopixels.bitbuffer).await.ok();
             Timer::after(Duration::from_millis(100)).await;
         }
         let newInt = 255 - (int as u8) * 20;
