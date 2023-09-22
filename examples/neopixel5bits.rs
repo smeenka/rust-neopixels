@@ -41,7 +41,7 @@ fn main() -> ! {
 
     let mut spi = dp
         .SPI1
-        .spi((NoSck, NoMiso, gpiob.pb5), mode, 4.mhz(), &mut rcc);
+        .spi((NoSck, NoMiso, gpiob.pb5), mode, 4.MHz(), &mut rcc);
     spi.half_duplex_enable(true);
     spi.half_duplex_output_enable(true);
     spi.data_size(5);
@@ -69,7 +69,7 @@ fn main() -> ! {
                     block!(spi.send(b));
                 }
             } 
-            delay.delay(500.ms());
+            delay.delay(500.millis());
             blink.toggle().unwrap();
         }
         for i in 0..25 {
@@ -81,7 +81,7 @@ fn main() -> ! {
                     block!(spi.send(b));
                 }
             } 
-            delay.delay(100.ms());
+            delay.delay(100.millis());
             blink.toggle().unwrap();
         }
     }
